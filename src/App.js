@@ -15,6 +15,12 @@ class App extends Component {
         }
     }
 
+    handleClickOnBet(bet){
+        this.setState({
+            [bet]: this.state[bet] < 5 ? this.state[bet] + 1 : 0,
+        })
+    }
+
     render () {
         return (
             <div className="App">
@@ -24,11 +30,11 @@ class App extends Component {
                     <div/>
                 </div>
                 <div className="App-bet-row">
-                    <div className="App-bet-head">
+                    <div className="App-bet-head" onClick={() => this.state.tail === 0 && this.handleClickOnBet('head')}>
                         <div>Head</div>
                         <div>{this.state.head}</div>
                     </div>
-                    <div className="App-bet-tail">
+                    <div className="App-bet-tail" onClick={() => this.state.head === 0 &&this.handleClickOnBet('tail')}>
                         <div>Tail</div>
                         <div>{this.state.tail}</div>
                     </div>
