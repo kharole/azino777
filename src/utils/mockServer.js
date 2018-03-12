@@ -11,13 +11,6 @@ mockServer.on('message', server => {
             mockServer.send(JSON.stringify(
                 {
                     'name': 'attached',
-                    'bet': {  //initial state
-                        'amount': 3,
-                        'alternative': 'head'
-                    },
-                    'roundId': 1,
-                    'outcome': 'head',
-                    'win': 6
                 }
             ));
             break;
@@ -26,8 +19,18 @@ mockServer.on('message', server => {
             mockServer.send(JSON.stringify(
                 {
                     'name': 'flipped',
-                    'outcome': 'head',
+                    'result': 'head',
+                    'outcome': 'win',
                     'win': 6
+                }
+            ));
+            mockServer.send(JSON.stringify(
+                {
+                    'name': 'bet-accepted',
+                    'bet': {
+                        'amount': 3,
+                        'alternative': 'head'
+                    }
                 }
             ));
             mockServer.send(JSON.stringify(
@@ -37,12 +40,19 @@ mockServer.on('message', server => {
 
                 }
             ));
+            mockServer.send(JSON.stringify(
+                {
+                    'name': 'status-updated',
+                    'value': 'finished'
+
+                }
+            ));
             break;
         case ClientMessage.START_NEW_ROUND:
             mockServer.send(JSON.stringify(
                 {
                     'name': 'new-round-started',
-                    'roundId': 3
+                    'round': 3
                 }
             ));
             break;

@@ -11,6 +11,8 @@ export const ServerMessage = {
     FLIPPED: 'flipped',
     BALANCE_UPDATED: 'balance-updated',
     NEW_ROUND_STARTED: 'new-round-started',
+    BET_ACCEPTED: 'bet-accepted',
+    STATUS_UPDATED: 'status-updated',
 };
 
 
