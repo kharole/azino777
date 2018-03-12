@@ -14,12 +14,18 @@ class App extends Component {
         };
     }
 
+    componentWillReceiveProps(nextProps){
+        if (nextProps.bet && nextProps.bet.amount && nextProps.bet.alternative) {
+            this.setState({bet: nextProps.bet});
+        }
+    }
+
     componentWillMount () {
         this.props.onInit();
     }
 
     componentWillUnmount () {
-        this.props.onInit();
+        this.props.onClose();
     }
 
     handleClickOnBet (bet) {
@@ -34,12 +40,11 @@ class App extends Component {
     }
 
     render () {
-        console.log(this.props);
         return (
             <div className="App">
                 <div className="App-result-row">
                     <div/>
-                    <div>{this.props.outcome}</div>
+                    <div>{this.props.result}</div>
                     <div/>
                 </div>
                 <div className="App-bet-row">
@@ -81,6 +86,7 @@ App.propTypes = {
     round: PropTypes.number,
     win: PropTypes.number,
     balance: PropTypes.number,
+    result: PropTypes.string,
     outcome: PropTypes.string,
     onInit: PropTypes.func.isRequired,
     onFlip: PropTypes.func.isRequired,
