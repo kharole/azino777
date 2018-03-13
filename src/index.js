@@ -12,25 +12,23 @@ import { ServerMessage } from './constants/messageTypes';
 //const socket$ = Observable.webSocket('ws://localhost:9004');
 const socket$ = Observable.webSocket('ws://localhost:9000/ws');
 
+//TODO: highlight result alternative
+//TODO: updated status bar
+//TODO: show/hide message
+//TODO: lock/unlock flip button on start-new-round
+
 const onInit = () => socket$.next(JSON.stringify({name: 'attach', session: 'AAA'}));
 
 const onClose = () => socket$.next(JSON.stringify({name: 'detach'}));
 
 const onFlip = (amount, alternative) => {
-    socket$.next(JSON.stringify({name: 'start-new-round'}));
+    socket$.next(JSON.stringify({name: 'start-new-round'}));    //TODO: implement as a popup
     socket$.next(JSON.stringify({name: 'flip-coin', bet: amount, alternative}));
 };
 
 socket$
     .startWith({})
-    .scan((acc, curr) => {
-        switch (curr.name) {
-            case ServerMessage.BALANCE_UPDATED:
-                return {...acc, balance: curr.value};
-            default:
-                return {...acc, ...curr}
-        }
-    }, {})
+    .scan((acc, curr) => ({...acc, ...curr}), {})
     .do(e => console.log(e))
     .subscribe(
         ({balance, bet, round, result, outcome, win, alternative}) =>
@@ -39,7 +37,5 @@ socket$
                 document.getElementById('root')
             ),
     );
-
-
 
 registerServiceWorker();
