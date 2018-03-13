@@ -5,17 +5,21 @@ import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import { Observable } from 'rxjs';
 import { ServerMessage } from './constants/messageTypes';
-import { mockServer } from './utils/mockServer';
+// import { mockServer } from './utils/mockServer';
 
-mockServer;
+//mockServer;
 
-const socket$ = Observable.webSocket('ws://localhost:9004');
+//const socket$ = Observable.webSocket('ws://localhost:9004');
+const socket$ = Observable.webSocket('ws://localhost:9000/ws');
 
 const onInit = () => socket$.next(JSON.stringify({name: 'attach', session: 'AAA'}));
 
 const onClose = () => socket$.next(JSON.stringify({name: 'detach'}));
 
-const onFlip = (amount, alternative) => socket$.next(JSON.stringify({name: 'flip', bet: {amount, alternative}}));
+const onFlip = (amount, alternative) => {
+    socket$.next(JSON.stringify({name: 'start-new-round'}));
+    socket$.next(JSON.stringify({name: 'flip-coin', bet: amount, alternative}));
+};
 
 socket$
     .startWith({})
@@ -29,9 +33,9 @@ socket$
     }, {})
     .do(e => console.log(e))
     .subscribe(
-        ({balance, bet, round, result, outcome, win}) =>
+        ({balance, bet, round, result, outcome, win, alternative}) =>
             ReactDOM.render(
-                <App balance={balance} bet={bet} result={result} outcome={outcome} round={round} win={win} onInit={onInit} onClose={onClose} onFlip={onFlip}/>,
+                <App balance={balance} bet={bet} alternative={alternative} result={result} outcome={outcome} round={round} win={win} onInit={onInit} onClose={onClose} onFlip={onFlip}/>,
                 document.getElementById('root')
             ),
     );

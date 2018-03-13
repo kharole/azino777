@@ -16,7 +16,12 @@ class App extends Component {
 
     componentWillReceiveProps(nextProps){
         if (nextProps.bet && nextProps.bet.amount && nextProps.bet.alternative) {
-            this.setState({bet: nextProps.bet});
+            this.setState({
+                bet: {
+                    amount: nextProps.bet,
+                    alternative: nextProps.alternative
+                }
+            });
         }
     }
 
@@ -28,11 +33,11 @@ class App extends Component {
         this.props.onClose();
     }
 
-    handleClickOnBet (bet) {
-        if (this.state.bet.alternative === bet || this.state.bet.amount === 0) {
+    handleClickOnBet (alternative) {
+        if (this.state.bet.alternative === alternative || this.state.bet.amount === 0) {
             this.setState({
                 bet: {
-                    alternative: bet,
+                    alternative: alternative,
                     amount: this.state.bet.amount < 5 ? this.state.bet.amount + 1 : 0
                 },
             });
@@ -82,8 +87,9 @@ class App extends Component {
 }
 
 App.propTypes = {
-    bet: PropTypes.object,
+    bet: PropTypes.number,
     round: PropTypes.number,
+    alternative: PropTypes.string,
     win: PropTypes.number,
     balance: PropTypes.number,
     result: PropTypes.string,
