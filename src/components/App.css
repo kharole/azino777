@@ -37,7 +37,11 @@
 }
 
 .App-balance {
-    flex: 4;
+    flex: 2;
+}
+
+.App-status {
+    flex: 2;
 }
 
 .App-flip {
