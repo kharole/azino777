@@ -28,16 +28,32 @@
 .App-result-row > div {
     flex: 1;
     font-size: 10em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .App-bet-row > div {
     flex: 1;
     font-size: 5em;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.App-control-row > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .App-balance {
-    flex: 4;
+    flex: 2;
+}
+
+.App-status {
+    flex: 2;
 }
 
 .App-flip {

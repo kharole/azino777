@@ -1,41 +1,54 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Observable } from 'rxjs';
 import './index.css';
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
-import { Observable } from 'rxjs';
-import { ServerMessage } from './constants/messageTypes';
-// import { mockServer } from './utils/mockServer';
 
-//mockServer;
 
-//const socket$ = Observable.webSocket('ws://localhost:9004');
-const socket$ = Observable.webSocket('ws://localhost:9000/ws');
+const socket$ = Observable.webSocket('wss://scalaua2018.herokuapp.com/ws');
 
-//TODO: highlight result alternative
-//TODO: updated status bar
-//TODO: show/hide message
-//TODO: lock/unlock flip button on start-new-round
+// TODO: highlight result alternative
+// TODO: updated status bar
+// TODO: show/hide message
+// TODO: lock/unlock flip button on start-new-round
 
-const onInit = () => socket$.next(JSON.stringify({name: 'attach', session: 'AAA'}));
+const onInit = () => socket$.next(JSON.stringify({ name: 'attach', session: 'CCC' }));
 
-const onClose = () => socket$.next(JSON.stringify({name: 'detach'}));
+const onClose = () => socket$.next(JSON.stringify({ name: 'detach' }));
+
+const onNewRound = () => {
+    socket$.next(JSON.stringify({ name: 'start-new-round' }));
+};
 
 const onFlip = (amount, alternative) => {
-    socket$.next(JSON.stringify({name: 'start-new-round'}));    //TODO: implement as a popup
-    socket$.next(JSON.stringify({name: 'flip-coin', bet: amount, alternative}));
+    socket$.next(JSON.stringify({ name: 'flip-coin', bet: amount, alternative }));
 };
 
 socket$
     .startWith({})
-    .scan((acc, curr) => ({...acc, ...curr}), {})
+    .scan((acc, curr) => ({ ...acc, ...curr }), {})
     .do(e => console.log(e))
-    .subscribe(
-        ({balance, bet, round, result, outcome, win, alternative}) =>
-            ReactDOM.render(
-                <App balance={balance} bet={bet} alternative={alternative} result={result} outcome={outcome} round={round} win={win} onInit={onInit} onClose={onClose} onFlip={onFlip}/>,
-                document.getElementById('root')
-            ),
-    );
+    .subscribe(({
+        balance, bet, round, result, outcome, win, alternative, status, name
+    }) =>
+        ReactDOM.render(
+            <App
+                alternative={alternative}
+                balance={balance}
+                bet={bet}
+                command={name}
+                outcome={outcome}
+                result={result}
+                round={round}
+                status={status}
+                win={win}
+                onInit={onInit}
+                onClose={onClose}
+                onFlip={onFlip}
+                onNewRound={onNewRound}
+            />,
+            document.getElementById('root'),
+        ));
 
 registerServiceWorker();

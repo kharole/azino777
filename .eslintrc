@@ -1,0 +1,31 @@
+{
+  "plugins": ["jest"],
+  "settings": {
+    "ecmascript": 6
+  },
+  "env": {
+    "jest/globals": true
+  },
+  "extends": "airbnb",
+  "rules": {
+    "linebreak-style": ["error", "windows"],
+    "indent": [2, 4, {"SwitchCase": 1}],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "no-trailing-spaces": 0,
+    "react/jsx-indent": "off",
+    "react/jsx-indent-props": "off",
+    "import/prefer-default-export": 0,
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
+    "no-case-declarations": "off",
+    "default-case": "warn"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  }
+}
