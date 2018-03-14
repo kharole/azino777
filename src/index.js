@@ -13,12 +13,15 @@ const socket$ = Observable.webSocket('wss://scalaua2018.herokuapp.com/ws');
 // TODO: show/hide message
 // TODO: lock/unlock flip button on start-new-round
 
-const onInit = () => socket$.next(JSON.stringify({ name: 'attach', session: 'AAA' }));
+const onInit = () => socket$.next(JSON.stringify({ name: 'attach', session: 'CCC' }));
 
 const onClose = () => socket$.next(JSON.stringify({ name: 'detach' }));
 
+const onNewRound = () => {
+    socket$.next(JSON.stringify({ name: 'start-new-round' }));
+};
+
 const onFlip = (amount, alternative) => {
-    socket$.next(JSON.stringify({ name: 'start-new-round' })); // TODO: implement as a popup
     socket$.next(JSON.stringify({ name: 'flip-coin', bet: amount, alternative }));
 };
 
@@ -43,6 +46,7 @@ socket$
                 onInit={onInit}
                 onClose={onClose}
                 onFlip={onFlip}
+                onNewRound={onNewRound}
             />,
             document.getElementById('root'),
         ));

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './App.css';
 import { ServerMessage } from '../constants/messageTypes';
+import Popup from './popup/Popup';
 
 class App extends Component {
     constructor(props) {
@@ -11,7 +12,8 @@ class App extends Component {
                 alternative: 'head',
                 amount: 0,
             },
-            isFlippable: false,
+            isFlipDisabled: false,
+            isPopupVisible: false,
         };
     }
 
@@ -28,10 +30,13 @@ class App extends Component {
                 },
             });
         }
-        if (nextProps.command === ServerMessage.NEW_ROUND_STARTED) {
-            this.state({
-                isFlippable: true,
-            });
+        switch (nextProps.command) {
+            case ServerMessage.FLIPPED:
+                this.setState({ isPopupVisible: true });
+                break;
+            case ServerMessage.NEW_ROUND_STARTED:
+                this.setState({ isPopupVisible: false });
+                break;
         }
     }
 
@@ -53,6 +58,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
+                {this.state.isPopupVisible && <Popup title="Continue" message="Please click OK to continue" handlePopupClick={this.props.onNewRound} />}
                 <div className="App-result-row">
                     <div />
                     <div>{this.props.result}</div>
@@ -85,7 +91,6 @@ class App extends Component {
                     </div>
                     <div className="App-flip">
                         <button
-                            disabled={!this.state.isFlippable}
                             onClick={() => this.props.onFlip(this.state.bet.amount, this.state.bet.alternative)}
                         >
                             Flip!
@@ -117,6 +122,7 @@ App.propTypes = {
     onInit: PropTypes.func.isRequired,
     onFlip: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
+    onNewRound: PropTypes.func.isRequired,
 };
 
 export default App;
