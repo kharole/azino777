@@ -1,83 +1,46 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './App.css';
-import { ServerMessage } from '../constants/messageTypes';
 import Popup from './popup/Popup';
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            bet: {
-                alternative: 'head',
-                amount: 0,
-            },
-            isFlipDisabled: false,
-            isPopupVisible: false,
-        };
-    }
 
     componentWillMount() {
         this.props.onInit();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.bet && nextProps.bet && nextProps.alternative) {
-            this.setState({
-                bet: {
-                    amount: nextProps.bet,
-                    alternative: nextProps.alternative,
-                },
-            });
-        }
-        switch (nextProps.command) {
-            case ServerMessage.FLIPPED:
-                this.setState({ isPopupVisible: true });
-                break;
-            case ServerMessage.NEW_ROUND_STARTED:
-                this.setState({ isPopupVisible: false });
-                break;
-        }
     }
 
     componentWillUnmount() {
         this.props.onClose();
     }
 
-    handleClickOnBet(alternative) {
-        if (this.state.bet.alternative === alternative || this.state.bet.amount === 0) {
-            this.setState({
-                bet: {
-                    alternative,
-                    amount: this.state.bet.amount < 5 ? this.state.bet.amount + 1 : 0,
-                },
-            });
-        }
-    }
-
     render() {
         return (
             <div className="App">
-                {this.state.isPopupVisible && <Popup title="Continue" message="Please click OK to continue" handlePopupClick={this.props.onNewRound} />}
+                {false && <Popup title="Continue" message="Please click OK to continue" handlePopupClick={this.props.onNewRound} />}
                 <div className="App-result-row">
                     <div />
-                    <div>{this.props.result}</div>
+                    <div className={`App-outcome-${this.props.outcome}`}>{this.props.result}</div>
                     <div />
                 </div>
                 <div className="App-bet-row">
                     <div
                         className="App-bet-head"
-                        onClick={() => this.handleClickOnBet('head')}
+                        onClick={() => !this.props.isLocked ? this.props.onAlternativeClick('head', this.props.bet) : null}
                     >
                         <div>Head</div>
-                        <div>{this.state.bet.alternative === 'head' ? this.state.bet.amount : 0}</div>
+                        <div>{this.props.alternative === 'head' ? this.props.bet : 0}</div>
                     </div>
                     <div
                         className="App-bet-tail"
-                        onClick={() => this.handleClickOnBet('tail')}
+                        onClick={() => !this.props.isLocked ? this.props.onAlternativeClick('tail', this.props.bet) : null}
                     >
                         <div>Tail</div>
-                        <div>{this.state.bet.alternative === 'tail' ? this.state.bet.amount : 0}</div>
+                        <div>{this.props.alternative === 'tail' ? this.props.bet : 0}</div>
+                    </div>
+                </div>
+                <div>
+                    <div style={{ visibility: this.props.showClickToContinue ? null : 'hidden' }}>
+                        <a className="App-continue-link" onClick={this.props.onNewRound}>Click to continue</a>
                     </div>
                 </div>
                 <div className="App-control-row">
@@ -91,7 +54,8 @@ class App extends Component {
                     </div>
                     <div className="App-flip">
                         <button
-                            onClick={() => this.props.onFlip(this.state.bet.amount, this.state.bet.alternative)}
+                            disabled={this.props.isLocked}
+                            onClick={() => this.props.onFlip(this.props.bet, this.props.alternative)}
                         >
                             Flip!
                         </button>
@@ -118,11 +82,15 @@ App.propTypes = {
     result: PropTypes.string,
     round: PropTypes.number,
     outcome: PropTypes.string,
+    status: PropTypes.string,
     win: PropTypes.number,
+    isLocked: PropTypes.bool,
+    showClickToContinue: PropTypes.bool,
     onInit: PropTypes.func.isRequired,
     onFlip: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     onNewRound: PropTypes.func.isRequired,
+    onAlternativeClick: PropTypes.func.isRequired,
 };
 
 export default App;

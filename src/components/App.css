@@ -33,6 +33,11 @@
     justify-content: center;
 }
 
+.App-continue-link {
+    font-size: 2em;
+    cursor: pointer;
+}
+
 .App-bet-row > div {
     flex: 1;
     font-size: 5em;
@@ -78,4 +83,12 @@
 
 .App-round {
     flex: 2;
+}
+
+.App-outcome-win {
+    color: green;
+}
+
+.App-outcome-lose {
+    color: red;
 }
