@@ -19,7 +19,7 @@ class App extends Component {
                 {false && <Popup title="Continue" message="Please click OK to continue" handlePopupClick={this.props.onNewRound} />}
                 <div className="App-result-row">
                     <div />
-                    <div>{this.props.result}</div>
+                    <div className={`App-outcome-${this.props.outcome}`}>{this.props.result}</div>
                     <div />
                 </div>
                 <div className="App-bet-row">

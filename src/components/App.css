@@ -84,3 +84,11 @@
 .App-round {
     flex: 2;
 }
+
+.App-outcome-win {
+    color: green;
+}
+
+.App-outcome-lose {
+    color: red;
+}

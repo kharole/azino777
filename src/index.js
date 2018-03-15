@@ -46,7 +46,9 @@ const state$ = merge(socket$, internal$)
                     showClickToContinue: false,
                 };
             case ServerMessage.FLIPPED: // Higlight win
-                return { ...acc, ...curr, showClickToContinue: true };
+                return {
+                    ...acc, ...curr, showClickToContinue: true, outcome: curr.result === acc.alternative ? 'win' : 'lose',
+                };
             case ServerMessage.BET_ACCEPTED:
                 return { ...acc, ...curr, isLocked: true };
             default:
