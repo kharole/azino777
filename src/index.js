@@ -40,7 +40,7 @@ const state$ = merge(socket$, internal$)
                     ...acc,
                     ...curr,
                     alternative: null,
-                    amount: 0,
+                    bet: 0,
                     result: null,
                     isLocked: false,
                     outcome: null,
