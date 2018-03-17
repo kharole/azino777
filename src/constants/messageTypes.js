@@ -13,6 +13,8 @@ export const ServerMessage = {
     NEW_ROUND_STARTED: 'new-round-started',
     BET_ACCEPTED: 'bet-accepted',
     STATUS_UPDATED: 'status-updated',
+    SHOW_DISPOSABLE_MESSAGE: 'show-disposable-message',
+    SHOW_BLOCKING_MESSAGE: 'show-blocking-message',
+    HIDE_BLOCKING_MESSAGE: 'hide-blocking-message',
 };
-
 

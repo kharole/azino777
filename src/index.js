@@ -30,8 +30,12 @@ const onFlip = (amount, alternative) => {
 const onAlternativeClick = (alternative, bet) =>
     internal$.next({ name: 'alternative-clicked', alternative, bet: bet < 5 ? bet + 1 : 0 });
 
+const onMessageConfirm = () => internal$.next({ name: 'message-confirmed', message: { isVisible: false } });
+
 const state$ = merge(socket$, internal$)
-    .startWith({ bet: 0 })
+    .startWith({
+        balance: 0, bet: 0, win: 0, round: 0, status: '', message: { isVisible: false },
+    })
     .map(e => e)
     .scan((acc, curr) => {
         switch (curr.name) {
@@ -43,14 +47,21 @@ const state$ = merge(socket$, internal$)
                     amount: 0,
                     result: null,
                     isLocked: false,
+                    win: 0,
                     showClickToContinue: false,
                 };
-            case ServerMessage.FLIPPED: // Higlight win
+            case ServerMessage.FLIPPED:
                 return {
-                    ...acc, ...curr, showClickToContinue: true, outcome: curr.result === acc.alternative ? 'win' : 'lose',
+                    ...acc, ...curr, showClickToContinue: true,
                 };
             case ServerMessage.BET_ACCEPTED:
                 return { ...acc, ...curr, isLocked: true };
+            case ServerMessage.SHOW_DISPOSABLE_MESSAGE:
+                return { ...acc, message: { isVisible: true, isBlocking: false, text: curr.message } };
+            case ServerMessage.SHOW_BLOCKING_MESSAGE:
+                return { ...acc, message: { isVisible: true, isBlocking: true, text: curr.message } };
+            case ServerMessage.HIDE_BLOCKING_MESSAGE:
+                return { ...acc, message: { isVisible: false } };
             default:
                 return { ...acc, ...curr };
         }
@@ -59,7 +70,8 @@ const state$ = merge(socket$, internal$)
 state$
     .do(e => console.log(e))
     .subscribe(({
-        balance, bet, round, result, outcome, win, alternative, status, name, isLocked, showClickToContinue,
+        balance, bet, round, result, outcome, win, alternative,
+        status, name, isLocked, showClickToContinue, message,
     }) =>
         ReactDOM.render(
             <App
@@ -73,12 +85,14 @@ state$
                 status={status}
                 win={win}
                 isLocked={isLocked}
+                message={message}
                 showClickToContinue={showClickToContinue}
                 onInit={onInit}
                 onClose={onClose}
                 onFlip={onFlip}
                 onNewRound={onNewRound}
                 onAlternativeClick={onAlternativeClick}
+                onMessageConfirm={onMessageConfirm}
             />,
             document.getElementById('root'),
         ));

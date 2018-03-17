@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Popup.css';
 
-function Popup (props) {
+function Popup(props) {
     return (
         <div className="Popup-overlay">
             <div className="Popup">
-                <div className="Popup-header">{props.title}</div>
+                <div className="Popup-header">Message:</div>
                 <div className="Popup-message">{props.message}</div>
                 <div className="Popup-button">
-                    <button onClick={props.handlePopupClick}>OK</button>
+                    {!props.isBlocking && <button onClick={props.handleMessageConfirm}>OK</button>}
                 </div>
             </div>
         </div>
@@ -17,9 +17,9 @@ function Popup (props) {
 }
 
 Popup.propTypes = {
-    title: PropTypes.string.isRequired,
+    isBlocking: PropTypes.bool.isRequired,
     message: PropTypes.string.isRequired,
-    handlePopupClick: PropTypes.func.isRequired,
+    handleMessageConfirm: PropTypes.func.isRequired,
 };
 Popup.defaultProps = {};
 
