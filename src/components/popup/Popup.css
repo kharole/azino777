@@ -21,12 +21,22 @@
 .Popup-header {
     flex: 1;
     border-bottom: black solid 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .Popup-message {
     flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .Popup-button {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

@@ -4,7 +4,6 @@ import './App.css';
 import Popup from './popup/Popup';
 
 class App extends Component {
-
     componentWillMount() {
         this.props.onInit();
     }
@@ -16,7 +15,9 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                {false && <Popup title="Continue" message="Please click OK to continue" handlePopupClick={this.props.onNewRound} />}
+                {(this.props.message.isVisible) &&
+                <Popup isBlocking={this.props.message.isBlocking} message={this.props.message.text} handleMessageConfirm={this.props.onMessageConfirm} />
+                }
                 <div className="App-result-row">
                     <div />
                     <div className={`App-outcome-${this.props.outcome}`}>{this.props.result}</div>
@@ -25,14 +26,14 @@ class App extends Component {
                 <div className="App-bet-row">
                     <div
                         className="App-bet-head"
-                        onClick={() => !this.props.isLocked ? this.props.onAlternativeClick('head', this.props.bet) : null}
+                        onClick={() => (!this.props.isLocked ? this.props.onAlternativeClick('head', this.props.bet) : null)}
                     >
                         <div>Head</div>
                         <div>{this.props.alternative === 'head' ? this.props.bet : 0}</div>
                     </div>
                     <div
                         className="App-bet-tail"
-                        onClick={() => !this.props.isLocked ? this.props.onAlternativeClick('tail', this.props.bet) : null}
+                        onClick={() => (!this.props.isLocked ? this.props.onAlternativeClick('tail', this.props.bet) : null)}
                     >
                         <div>Tail</div>
                         <div>{this.props.alternative === 'tail' ? this.props.bet : 0}</div>
@@ -76,21 +77,26 @@ class App extends Component {
 
 App.propTypes = {
     alternative: PropTypes.string,
-    balance: PropTypes.number,
-    bet: PropTypes.number,
-    command: PropTypes.string,
+    balance: PropTypes.number.isRequired,
+    bet: PropTypes.number.isRequired,
     result: PropTypes.string,
-    round: PropTypes.number,
+    round: PropTypes.number.isRequired,
     outcome: PropTypes.string,
-    status: PropTypes.string,
-    win: PropTypes.number,
+    status: PropTypes.string.isRequired,
+    win: PropTypes.number.isRequired,
     isLocked: PropTypes.bool,
     showClickToContinue: PropTypes.bool,
+    message: PropTypes.shape({
+        isVisible: PropTypes.bool.isRequired,
+        isBlocking: PropTypes.bool,
+        text: PropTypes.string,
+    }),
     onInit: PropTypes.func.isRequired,
     onFlip: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     onNewRound: PropTypes.func.isRequired,
     onAlternativeClick: PropTypes.func.isRequired,
+    onMessageConfirm: PropTypes.func.isRequired,
 };
 
 export default App;
