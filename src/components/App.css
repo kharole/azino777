@@ -15,14 +15,23 @@
     height: 100%;
 }
 
+.App-continue-link-row,
 .App-result-row,
 .App-bet-row {
-    flex: 2;
+    background-color: rgb(64, 99, 71);
+    color: rgb(188, 204, 191);
+}
+
+.App-result-row,
+.App-bet-row {
+    flex: 2.5;
 }
 
 .App-control-row {
     flex: 1;
     font-size: 2em;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: rgb(211, 214, 212);
 }
 
 .App-result-row > div {
@@ -36,15 +45,28 @@
 .App-continue-link {
     font-size: 2em;
     cursor: pointer;
+    background-color: rgb(168, 136, 59);
 }
 
 .App-bet-row > div {
     flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.App-bet-row > div > div {
+    flex: 1;
     font-size: 5em;
-    cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    height: 50%;
+}
+
+.App-bet {
+    border: rgb(188, 204, 191) solid 5px;
+    border-radius: 15px;
+    cursor: pointer;
 }
 
 .App-control-row > div {
@@ -85,10 +107,10 @@
     flex: 2;
 }
 
-.App-outcome-win {
-    color: green;
+.win {
+    border-color: green;
 }
 
-.App-outcome-loss {
-    color: red;
+.loss {
+    border-color: red;
 }

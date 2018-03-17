@@ -16,7 +16,11 @@ class App extends Component {
         return (
             <div className="App">
                 {(this.props.message.isVisible) &&
-                <Popup isBlocking={this.props.message.isBlocking} message={this.props.message.text} handleMessageConfirm={this.props.onMessageConfirm} />
+                <Popup
+                    isBlocking={this.props.message.isBlocking}
+                    message={this.props.message.text}
+                    handleMessageConfirm={this.props.onMessageConfirm}
+                />
                 }
                 <div className="App-result-row">
                     <div />
@@ -24,22 +28,30 @@ class App extends Component {
                     <div />
                 </div>
                 <div className="App-bet-row">
-                    <div
-                        className="App-bet-head"
-                        onClick={() => (!this.props.isLocked ? this.props.onAlternativeClick('head', this.props.bet) : null)}
-                    >
-                        <div>Head</div>
-                        <div>{this.props.alternative === 'head' ? this.props.bet : 0}</div>
+                    <div>
+                        <div />
+                        <div
+                            className={`App-bet ${this.props.alternative === 'head' && this.props.outcome}`}
+                            onClick={() => (!this.props.isLocked ? this.props.onAlternativeClick('head', this.props.bet) : null)}
+                        >
+                            <div>Head</div>
+                            <div>{this.props.alternative === 'head' ? this.props.bet : 0}</div>
+                        </div>
+                        <div />
                     </div>
-                    <div
-                        className="App-bet-tail"
-                        onClick={() => (!this.props.isLocked ? this.props.onAlternativeClick('tail', this.props.bet) : null)}
-                    >
-                        <div>Tail</div>
-                        <div>{this.props.alternative === 'tail' ? this.props.bet : 0}</div>
+                    <div>
+                        <div />
+                        <div
+                            className={`App-bet ${this.props.alternative === 'tail' && this.props.outcome}`}
+                            onClick={() => (!this.props.isLocked ? this.props.onAlternativeClick('tail', this.props.bet) : null)}
+                        >
+                            <div>Tail</div>
+                            <div>{this.props.alternative === 'tail' ? this.props.bet : 0}</div>
+                        </div>
+                        <div />
                     </div>
                 </div>
-                <div>
+                <div className="App-continue-link-row">
                     <div style={{ visibility: this.props.showClickToContinue ? null : 'hidden' }}>
                         <a className="App-continue-link" onClick={this.props.onNewRound}>Click to continue</a>
                     </div>

@@ -11,10 +11,6 @@ const socket$ = Observable.webSocket('wss://scalaua2018.herokuapp.com/ws');
 
 const internal$ = new Subject();
 
-// TODO: highlight result alternative
-// TODO: updated status bar
-// TODO: show/hide message
-
 const onInit = () => socket$.next(JSON.stringify({ name: 'attach', session: 'CCC' }));
 
 const onClose = () => socket$.next(JSON.stringify({ name: 'detach' }));
@@ -47,6 +43,7 @@ const state$ = merge(socket$, internal$)
                     amount: 0,
                     result: null,
                     isLocked: false,
+                    outcome: null,
                     win: 0,
                     showClickToContinue: false,
                 };
