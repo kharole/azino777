@@ -11,7 +11,9 @@ const socket$ = Observable.webSocket('wss://scalaua2018.herokuapp.com/ws');
 
 const internal$ = new Subject();
 
-const onInit = () => socket$.next(JSON.stringify({ name: 'attach', session: 'CCC' }));
+const session = new URLSearchParams(window.location.search).get('sessionId');
+
+const onInit = () => socket$.next(JSON.stringify({ name: 'attach', session }));
 
 const onClose = () => socket$.next(JSON.stringify({ name: 'detach' }));
 
