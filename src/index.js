@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Observable, Subject } from 'rxjs';
 import { merge } from 'rxjs/observable/merge';
+import { catchError } from 'rxjs/operators';
 import './index.css';
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
@@ -28,9 +29,19 @@ const onFlip = (amount, alternative) => {
 const onAlternativeClick = (alternative, bet) =>
     internal$.next({ name: 'alternative-clicked', alternative, bet: bet < 5 ? bet + 1 : 0 });
 
-const onMessageConfirm = () => internal$.next({ name: 'message-confirmed', message: { isVisible: false } });
+const onMessageConfirm = () =>
+    internal$.next({ name: 'message-confirmed', message: { isVisible: false } });
 
 const state$ = merge(socket$, internal$)
+    .pipe(catchError(err =>
+        Observable.of({
+            name: 'blocked',
+            message: {
+                isVisible: true,
+                isBlocking: true,
+                text: `Connectivity issue: (code: ${err.code}, type: ${err.type}, reason: ${err.reason})`,
+            },
+        })))
     .startWith({
         balance: 0, bet: 0, win: 0, round: 0, status: '', message: { isVisible: false },
     })
