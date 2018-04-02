@@ -67,7 +67,7 @@ class App extends Component {
                     </div>
                     <div className="App-flip">
                         <button
-                            disabled={this.props.isLocked}
+                            disabled={this.props.isLocked || this.props.bet === 0}
                             onClick={() => this.props.onFlip(this.props.bet, this.props.alternative)}
                         >
                             Flip!
