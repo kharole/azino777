@@ -8,7 +8,8 @@ import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import { ServerMessage } from './constants/messageTypes';
 
-const socket$ = Observable.webSocket('wss://scalaua2018.herokuapp.com/ws');
+//const socket$ = Observable.webSocket('wss://scalaua2018.herokuapp.com/ws');
+const socket$ = Observable.webSocket('ws://localhost:9000/ws');
 
 const internal$ = new Subject();
 
